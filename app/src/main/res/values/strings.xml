@@ -12,5 +12,7 @@
 
     <string name="explore_no_results">No results found</string>
 
+    <string name="event_share">Share</string>
+
     <string name="app_attribution">Powered by Eventfinda</string>
 </resources>

@@ -1,13 +1,16 @@
 package nz.co.chrisdrake.events.ui;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+
 import nz.co.chrisdrake.events.R;
 import nz.co.chrisdrake.events.data.api.model.Event;
 import nz.co.chrisdrake.events.ui.explore.ExploreFragment;
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override public void onEventClicked(Event event) {
         Uri uri = Uri.parse(event.url);
-        openCustomTab(uri);
+        openCustomTab(uri, event.name);
     }
 
     @Override public void onAttributionClicked() {
@@ -57,12 +60,22 @@ public class MainActivity extends AppCompatActivity
         openBrowser(uri);
     }
 
-    private void openCustomTab(Uri uri) {
+    private void openCustomTab(Uri uri, String shareTitle) {
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+            .setType("text/plain")
+            .setSubject(shareTitle)
+            .setText(uri.toString())
+            .getIntent();
+        PendingIntent sharePendingIntent = PendingIntent.getActivity(this, 0, shareIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT);
+
         CustomTabsIntent customTabsIntent =
             new CustomTabsIntent.Builder(customTabActivityHelper.getSession()) //
                 .setToolbarColor(ContextCompat.getColor(this, R.color.theme_primary))
+                .setShowTitle(true)
                 .setStartAnimations(this, R.anim.slide_in_right, R.anim.slide_out_left)
                 .setExitAnimations(this, R.anim.slide_in_left, R.anim.slide_out_right)
+                .addMenuItem(getString(R.string.event_share), sharePendingIntent)
                 .build();
 
         CustomTabActivityHelper.openCustomTab(this, customTabsIntent, uri,

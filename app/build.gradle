@@ -33,8 +33,10 @@ android {
         signingConfig signingConfigs.events
 
         buildConfigField "long", "REALM_SCHEMA_VERSION", 1 + 'L'
-        buildConfigField "String", "EVENTFINDER_API_USERNAME", "\"${eventfinder_api_username}\""
-        buildConfigField "String", "EVENTFINDER_API_PASSWORD", "\"${eventfinder_api_password}\""
+        buildConfigField "String", "EVENTFINDER_API_USERNAME",
+                "\"${System.getenv("EVENTFINDER_API_USERNAME")}\""
+        buildConfigField "String", "EVENTFINDER_API_PASSWORD",
+                "\"${System.getenv("EVENTFINDER_API_PASSWORD")}\""
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -15,7 +15,8 @@
         android:launchMode="singleTop"
         tools:ignore="UnusedAttribute">
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:theme="@style/AppTheme.SplashScreen">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>

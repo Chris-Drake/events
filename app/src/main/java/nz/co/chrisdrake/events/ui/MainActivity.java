@@ -20,7 +20,10 @@ public class MainActivity extends AppCompatActivity
     private final CustomTabActivityHelper customTabActivityHelper = new CustomTabActivityHelper();
 
     @Override public void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {

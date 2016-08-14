@@ -22,9 +22,10 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
@@ -66,16 +67,16 @@ public class ExploreFragment extends BaseFragment
     @Inject Picasso picasso;
     @Inject SharedPreferences sharedPrefs;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.timespan_spinner) Spinner timeSpanSpinner;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.timespan_spinner) Spinner timeSpanSpinner;
 
-    @Bind(R.id.list) RecyclerView recyclerView;
-    @Bind(R.id.refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.error) TextView errorView;
-    @Bind(R.id.empty) View emptyView;
+    @BindView(R.id.list) RecyclerView recyclerView;
+    @BindView(R.id.refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.error) TextView errorView;
+    @BindView(R.id.empty) View emptyView;
 
-    @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
-    @Bind(R.id.menu_explore_filter) ExploreFilterView filterView;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.menu_explore_filter) ExploreFilterView filterView;
 
     private final ExploreFilterImpl filter = new ExploreFilterImpl();
 
@@ -90,6 +91,8 @@ public class ExploreFragment extends BaseFragment
     private int selectedTimeSpanPosition;
 
     private @ViewState int viewState;
+
+    private Unbinder unbinder;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -108,7 +111,7 @@ public class ExploreFragment extends BaseFragment
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_explore, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
 
         toolbar.inflateMenu(R.menu.explore);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -129,7 +132,7 @@ public class ExploreFragment extends BaseFragment
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {

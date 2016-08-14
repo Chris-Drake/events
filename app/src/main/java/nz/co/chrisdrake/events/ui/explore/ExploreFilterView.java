@@ -13,7 +13,7 @@ import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import java.util.List;
@@ -33,10 +33,10 @@ public class ExploreFilterView extends FrameLayout {
         void onFeaturedOnlyToggled(boolean checked);
     }
 
-    @Bind(R.id.filter_featured_only) CheckedTextView featuredOnlyToggle;
-    @Bind(R.id.filter_free_only) CheckedTextView freeOnlyToggle;
-    @Bind(R.id.filter_location_spinner) Spinner locationSpinner;
-    @Bind(R.id.filter_location_error) TextView locationError;
+    @BindView(R.id.filter_featured_only) CheckedTextView featuredOnlyToggle;
+    @BindView(R.id.filter_free_only) CheckedTextView freeOnlyToggle;
+    @BindView(R.id.filter_location_spinner) Spinner locationSpinner;
+    @BindView(R.id.filter_location_error) TextView locationError;
 
     private final ExploreLocationAdapter locationAdapter;
 

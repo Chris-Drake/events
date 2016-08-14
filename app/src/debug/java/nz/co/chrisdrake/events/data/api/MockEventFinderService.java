@@ -5,7 +5,7 @@ import nz.co.chrisdrake.events.data.api.model.EventResource;
 import nz.co.chrisdrake.events.data.api.model.LocationResource;
 import nz.co.chrisdrake.events.data.api.model.MockEventResponse;
 import nz.co.chrisdrake.events.data.api.model.MockLocationResponse;
-import retrofit.http.Query;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public class MockEventFinderService implements EventFinderService {

@@ -2,14 +2,14 @@ package nz.co.chrisdrake.events.data.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module public class ApiModule {
 
@@ -36,9 +36,7 @@ import retrofit.RxJavaCallAdapterFactory;
     }
 
     static OkHttpClient createApiClient(OkHttpClient client, ApiAuthenticator authenticator) {
-        client = client.clone();
-        client.setAuthenticator(authenticator);
-        return client;
+        return client.newBuilder().authenticator(authenticator).build();
     }
 
     static Retrofit createRetrofit(OkHttpClient client, Gson gson) {

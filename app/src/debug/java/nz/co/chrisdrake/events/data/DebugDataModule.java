@@ -3,16 +3,16 @@ package nz.co.chrisdrake.events.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.picasso.OkHttpDownloader;
+
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
-import java.io.IOException;
-import javax.inject.Singleton;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
 
 @Module public class DebugDataModule {
@@ -31,18 +31,18 @@ import timber.log.Timber;
     }
 
     @Provides @Singleton Picasso providePicasso(Context context, OkHttpClient client) {
-        return new Picasso.Builder(context).downloader(new OkHttpDownloader(client)).build();
+        return new Picasso.Builder(context) //
+            .downloader(new OkHttp3Downloader(client)) //
+            .build();
     }
 
     @Provides @Singleton OkHttpClient provideHttpClient(Context context) {
-        OkHttpClient client = DataModule.createOkHttpClient(context);
-        client.interceptors().add(new Interceptor() {
-            @Override public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                Timber.i("Request: %s", request.url());
-                return chain.proceed(request);
-            }
-        });
-        return client;
+        HttpLoggingInterceptor loggingInterceptor =
+            new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").d(message));
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        return DataModule.createOkHttpClient(context).newBuilder()
+            .addInterceptor(loggingInterceptor)
+            .build();
     }
 }

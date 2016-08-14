@@ -3,8 +3,8 @@ package nz.co.chrisdrake.events.data.api;
 import android.support.annotation.IntRange;
 import nz.co.chrisdrake.events.data.api.model.EventResource;
 import nz.co.chrisdrake.events.data.api.model.LocationResource;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /** @see "http://www.eventfinda.co.nz/api/v2/overview" */

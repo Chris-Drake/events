@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -154,12 +154,12 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
     }
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.event_title) TextView title;
-        @Bind(R.id.event_description) TextView description;
-        @Bind(R.id.event_location) TextView location;
-        @Bind(R.id.event_date) TextView date;
-        @Bind(R.id.event_more_sessions) TextView moreSessions;
-        @Bind(R.id.event_image) ImageView image;
+        @BindView(R.id.event_title) TextView title;
+        @BindView(R.id.event_description) TextView description;
+        @BindView(R.id.event_location) TextView location;
+        @BindView(R.id.event_date) TextView date;
+        @BindView(R.id.event_more_sessions) TextView moreSessions;
+        @BindView(R.id.event_image) ImageView image;
 
         public EventViewHolder(View itemView, final ItemClickListener itemClickListener) {
             super(itemView);

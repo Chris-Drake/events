@@ -1,13 +1,13 @@
 package nz.co.chrisdrake.events.data.api;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import nz.co.chrisdrake.events.data.IsMockMode;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
 
 @Module public class DebugApiModule {
 

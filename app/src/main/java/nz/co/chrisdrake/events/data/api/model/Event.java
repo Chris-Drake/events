@@ -2,7 +2,7 @@ package nz.co.chrisdrake.events.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 import java.util.Date;
 
 /** @see EventResource */
@@ -15,17 +15,17 @@ public class Event implements Parcelable {
     public final Point point;
     public final String restrictions;
 
-    @SerializedName("datetime_start") public final Date dateStart;
-    @SerializedName("datetime_end") public final Date dateEnd;
-    @SerializedName("datetime_summary") public final String dateTimeSummary;
+    @Json(name = "datetime_start") public final Date dateStart;
+    @Json(name = "datetime_end") public final Date dateEnd;
+    @Json(name = "datetime_summary") public final String dateTimeSummary;
 
-    @SerializedName("location_summary") public final String locationSummary;
+    @Json(name = "location_summary") public final String locationSummary;
 
-    @SerializedName("is_free") public final boolean isFree;
-    @SerializedName("is_featured") public final boolean isFeatured;
+    @Json(name = "is_free") public final boolean isFree;
+    @Json(name = "is_featured") public final boolean isFeatured;
 
-    @SerializedName("images") public final ImageResource imageResource;
-    @SerializedName("sessions") public final SessionResource sessionResource;
+    @Json(name = "images") public final ImageResource imageResource;
+    @Json(name = "sessions") public final SessionResource sessionResource;
 
     public Event(long id, String name, String url, String description, Date dateStart, Date dateEnd,
         Point point, String locationSummary, String address, boolean isFree, boolean isFeatured,

@@ -1,7 +1,6 @@
 package nz.co.chrisdrake.events.data.api;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.squareup.moshi.Moshi;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
@@ -9,7 +8,7 @@ import javax.inject.Singleton;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 @Module public class ApiModule {
 
@@ -18,31 +17,31 @@ import retrofit2.converter.gson.GsonConverterFactory;
         return createApiClient(client, authenticator);
     }
 
-    @Provides @Singleton Gson provideGson() {
-        return createGson();
+    @Provides @Singleton Moshi provideMoshi() {
+        return createMoshi();
     }
 
     @Provides @Singleton Retrofit provideRetrofit(@Named("ApiClient") OkHttpClient client,
-        Gson gson) {
-        return createRetrofit(client, gson);
+        Moshi moshi) {
+        return createRetrofit(client, moshi);
     }
 
     @Provides @Singleton EventFinderService provideApi(Retrofit retrofit) {
         return retrofit.create(EventFinderService.class);
     }
 
-    static Gson createGson() {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    static Moshi createMoshi() {
+        return new Moshi.Builder().add(new DateAdapter()).build();
     }
 
     static OkHttpClient createApiClient(OkHttpClient client, ApiAuthenticator authenticator) {
         return client.newBuilder().authenticator(authenticator).build();
     }
 
-    static Retrofit createRetrofit(OkHttpClient client, Gson gson) {
+    static Retrofit createRetrofit(OkHttpClient client, Moshi moshi) {
         return new Retrofit.Builder().baseUrl("http://api.eventfinda.co.nz/v2/")
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .build();
     }

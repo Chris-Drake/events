@@ -2,7 +2,7 @@ package nz.co.chrisdrake.events.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 /** @see TransformResource */
 public class Transform implements Parcelable {
@@ -12,11 +12,11 @@ public class Transform implements Parcelable {
      * @see "http://www.eventfinda.co.nz/api/v2/image"
      */
     public enum TransformSize {
-        @SerializedName("2")_80X80,
-        @SerializedName("7")_650x280,
-        @SerializedName("8")_190x127,
-        @SerializedName("15")_75x75,
-        @SerializedName("27")_350x350,
+        @Json(name = "2")_80X80,
+        @Json(name = "7")_650x280,
+        @Json(name = "8")_190x127,
+        @Json(name = "15")_75x75,
+        @Json(name = "27")_350x350,
         OTHER
     }
 
@@ -24,7 +24,7 @@ public class Transform implements Parcelable {
     public final int width;
     public final int height;
 
-    @SerializedName("transformation_id") public final TransformSize transformSize;
+    @Json(name = "transformation_id") public final TransformSize transformSize;
 
     public Transform(String url, int width, int height, TransformSize transformSize) {
         this.url = url;

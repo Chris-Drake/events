@@ -2,14 +2,14 @@ package nz.co.chrisdrake.events.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 import java.util.Date;
 
 /** @see SessionResource */
 public class Session implements Parcelable {
-    @SerializedName("datetime_start") public final Date dateStart;
-    @SerializedName("datetime_end") public final Date dateEnd;
-    @SerializedName("datetime_summary") public final String dateTimeSummary;
+    @Json(name = "datetime_start") public final Date dateStart;
+    @Json(name = "datetime_end") public final Date dateEnd;
+    @Json(name = "datetime_summary") public final String dateTimeSummary;
 
     public Session(Date dateStart, Date dateEnd, String dateTimeSummary) {
         this.dateStart = dateStart;

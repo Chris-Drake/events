@@ -2,11 +2,11 @@ package nz.co.chrisdrake.events.data.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.gson.annotations.SerializedName;
+import com.squareup.moshi.Json;
 
 /** @see ImageResource */
 public class Image implements Parcelable {
-    @SerializedName("is_primary") public final boolean isPrimary;
+    @Json(name = "is_primary") public final boolean isPrimary;
 
     public final TransformResource transforms;
 

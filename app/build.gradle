@@ -39,7 +39,7 @@ android {
         buildConfigField "String", "EVENTFINDER_API_PASSWORD",
                 "\"${System.getenv("EVENTFINDER_API_PASSWORD")}\""
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "nz.co.chrisdrake.events.EventsTestRunner"
     }
 
     compileOptions {

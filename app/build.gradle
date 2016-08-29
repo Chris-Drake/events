@@ -53,7 +53,7 @@ android {
 }
 
 dependencies {
-    def appCompatVersion = '24.1.1'
+    def appCompatVersion = '24.2.0'
     def daggerVersion = '2.0.1'
     def retroFitVersion = '2.1.0'
 

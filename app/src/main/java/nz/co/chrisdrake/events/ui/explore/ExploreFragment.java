@@ -243,19 +243,9 @@ public class ExploreFragment extends BaseFragment
     private void setRefreshing(boolean refreshing) {
         if (refreshing) {
             drawerLayout.closeDrawers();
-
-            // SRL indicator does not appear when setRefreshing(true) is called unless it is posted.
-            // http://stackoverflow.com/questions/26858692/swiperefreshlayout-setrefreshing-not-showing-indicator-initially
-            swipeRefreshLayout.post(new Runnable() {
-                @Override public void run() {
-                    if (viewState == ViewState.REFRESHING) {
-                        swipeRefreshLayout.setRefreshing(true);
-                    }
-                }
-            });
-        } else {
-            swipeRefreshLayout.setRefreshing(false);
         }
+
+        swipeRefreshLayout.setRefreshing(refreshing);
     }
 
     @Override public void setLocationViewState(@ViewState int viewState) {

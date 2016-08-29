@@ -1,19 +1,36 @@
 package nz.co.chrisdrake.events.data.api.model;
 
+import android.support.annotation.Nullable;
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 /** @see LocationResource */
-public class Location {
-    public static final Location NEW_ZEALAND =
-        new Location(574, "New Zealand", "New Zealand", null);
+@AutoValue public abstract class Location {
+    public static final Location NEW_ZEALAND = Location.builder()
+        .id(574)
+        .name("New Zealand")
+        .summary("New Zealand")
+        .build();
 
-    public final int id;
-    public final String name;
-    public final String summary;
-    public final LocationChildResource children;
+    public abstract int id();
+    public abstract String name();
+    @Nullable public abstract String summary();
+    @Nullable public abstract LocationChildResource children();
 
-    public Location(int id, String name, String summary, LocationChildResource children) {
-        this.id = id;
-        this.name = name;
-        this.summary = summary;
-        this.children = children;
+    public static JsonAdapter<Location> jsonAdapter(Moshi moshi) {
+        return new AutoValue_Location.MoshiJsonAdapter(moshi);
+    }
+
+    static Builder builder() {
+        return new AutoValue_Location.Builder();
+    }
+
+    @AutoValue.Builder abstract static class Builder {
+        abstract Builder id(int id);
+        abstract Builder name(String name);
+        abstract Builder summary(String summary);
+        abstract Builder children(LocationChildResource children);
+        abstract Location build();
     }
 }

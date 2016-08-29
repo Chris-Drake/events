@@ -20,9 +20,9 @@ public class MockRealmHelper implements RealmHelper {
             RealmLocation realmLocation = createRealmLocation(location);
             persistedLocations.add(realmLocation);
 
-            LocationChildResource childrenResource = location.children;
+            LocationChildResource childrenResource = location.children();
             if (childrenResource != null) {
-                List<Location> children = childrenResource.children;
+                List<Location> children = childrenResource.children();
                 for (Location childLocation : children) {
                     persistedLocations.add(createRealmLocation(childLocation));
                 }
@@ -32,9 +32,9 @@ public class MockRealmHelper implements RealmHelper {
 
     private static RealmLocation createRealmLocation(Location location) {
         RealmLocation realmLocation = new RealmLocation();
-        realmLocation.setId(location.id);
-        realmLocation.setName(location.name);
-        realmLocation.setSummary(location.summary);
+        realmLocation.setId(location.id());
+        realmLocation.setName(location.name());
+        realmLocation.setSummary(location.summary());
         return realmLocation;
     }
 }

@@ -1,12 +1,19 @@
 package nz.co.chrisdrake.events.data.api.model;
 
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 
 /** @see Location */
-public class LocationResource {
-    public final List<Location> locations;
+@AutoValue public abstract class LocationResource {
+    public abstract List<Location> locations();
 
-    public LocationResource(List<Location> locations) {
-        this.locations = locations;
+    public static LocationResource create(List<Location> locations) {
+        return new AutoValue_LocationResource(locations);
+    }
+
+    public static JsonAdapter<LocationResource> jsonAdapter(Moshi moshi) {
+        return new AutoValue_LocationResource.MoshiJsonAdapter(moshi);
     }
 }

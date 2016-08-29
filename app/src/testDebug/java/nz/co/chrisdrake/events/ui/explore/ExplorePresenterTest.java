@@ -85,7 +85,7 @@ import static org.mockito.Mockito.when;
     }
 
     @Test public void addEvents_MoreThanZeroEvents_LoadMoreEnabled() {
-        presenter.addEvents(MockEventResponse.GOOGLE_IO.events);
+        presenter.addEvents(MockEventResponse.GOOGLE_IO.events());
         verify(mockView).enableLoadMore();
     }
 
@@ -141,7 +141,7 @@ import static org.mockito.Mockito.when;
 
     private void initMockServiceWithLocationSuccessResponse(EventFinderService service) {
         LocationResource locationResource =
-            new LocationResource(Collections.singletonList(Location.NEW_ZEALAND));
+            LocationResource.create(Collections.singletonList(Location.NEW_ZEALAND));
         when(service.locations(any(LocationQuery.class), anyInt(), anyInt())).thenReturn(
             Observable.just(locationResource));
     }

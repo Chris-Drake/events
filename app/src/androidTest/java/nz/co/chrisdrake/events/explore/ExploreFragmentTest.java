@@ -40,8 +40,8 @@ import static junit.framework.Assert.assertNotNull;
     }
 
     @Test public void eventName_IsDisplayed() {
-        onView(withText(MockEventResponse.GOOGLE_IO.events.get(0).name)).check(
-            matches(isDisplayed()));
+        onView(withText(MockEventResponse.GOOGLE_IO.events().get(0).name()))
+            .check(matches(isDisplayed()));
     }
 
     private DebugEventApp getApplication() {

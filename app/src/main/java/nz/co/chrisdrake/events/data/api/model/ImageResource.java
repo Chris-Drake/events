@@ -1,46 +1,30 @@
 package nz.co.chrisdrake.events.data.api.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 
 /** @see Image */
-public class ImageResource implements Parcelable {
-    public final List<Image> images;
+@AutoValue public abstract class ImageResource implements Parcelable {
+    public abstract List<Image> images();
 
-    public ImageResource(List<Image> images) {
-        this.images = images;
-    }
-
-    protected ImageResource(Parcel in) {
-        images = in.createTypedArrayList(Image.CREATOR);
-    }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(images);
-    }
-
-    @Override public int describeContents() {
-        return 0;
+    static ImageResource create(List<Image> images) {
+        return new AutoValue_ImageResource(images);
     }
 
     @Nullable public Image getPrimaryImage() {
-        for (Image image : images) {
-            if (image.isPrimary) {
+        for (Image image : images()) {
+            if (image.isPrimary()) {
                 return image;
             }
         }
         return null;
     }
 
-    public static final Creator<ImageResource> CREATOR = new Creator<ImageResource>() {
-        @Override public ImageResource createFromParcel(Parcel in) {
-            return new ImageResource(in);
-        }
-
-        @Override public ImageResource[] newArray(int size) {
-            return new ImageResource[size];
-        }
-    };
+    public static JsonAdapter<ImageResource> jsonAdapter(Moshi moshi) {
+        return new AutoValue_ImageResource.MoshiJsonAdapter(moshi);
+    }
 }

@@ -28,7 +28,7 @@ import rx.subscriptions.Subscriptions;
 public class ExplorePresenter implements BasePresenter<ExploreView> {
 
     private static final LocationQuery LOCATION_QUERY =
-        new LocationQuery.Builder().location(Location.NEW_ZEALAND.id).build();
+        new LocationQuery.Builder().location(Location.NEW_ZEALAND.id()).build();
 
     private final RealmHelper realmHelper;
     private final EventFinderService eventFinderService;
@@ -120,7 +120,7 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
         if (e != null) {
             view.showErrorMessage(e.getLocalizedMessage());
         } else if (eventResource != null) {
-            addEvents(eventResource.events);
+            addEvents(eventResource.events());
         }
     }
 
@@ -169,7 +169,7 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
         if (e != null) {
             view.setLocationViewState(ViewState.ERROR);
         } else if (locationResource != null) {
-            realmHelper.setPersistedLocations(locationResource.locations);
+            realmHelper.setPersistedLocations(locationResource.locations());
             view.setLocationViewState(ViewState.DEFAULT);
             view.displayLocations(realmHelper.getPersistedLocations());
         }

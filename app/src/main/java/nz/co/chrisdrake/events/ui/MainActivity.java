@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override public void onEventClicked(Event event) {
-        Uri uri = Uri.parse(event.url);
-        openCustomTab(uri, event.name);
+        Uri uri = Uri.parse(event.url());
+        openCustomTab(uri, event.name());
     }
 
     @Override public void onAttributionClicked() {

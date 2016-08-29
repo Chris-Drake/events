@@ -61,14 +61,14 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
 
     @Override public void onBindItemViewHolder(EventViewHolder holder, int position) {
         Event event = events.get(position);
-        holder.title.setText(event.name);
-        holder.location.setText(event.locationSummary);
+        holder.title.setText(event.name());
+        holder.location.setText(event.locationSummary());
 
         // Remove line-breaks.
-        String description = event.description.replaceAll("(\\r|\\n)", " ");
+        String description = event.description().replaceAll("(\\r|\\n)", " ");
         holder.description.setText(description);
 
-        bindImage(holder, event.imageResource);
+        bindImage(holder, event.imageResource());
         bindSession(holder, event);
     }
 
@@ -77,7 +77,7 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
 
         Transform transform = null;
         if (image != null) {
-            TransformResource transformResource = image.transforms;
+            TransformResource transformResource = image.transforms();
             for (TransformSize size : PREFERRED_IMAGE_SIZES) {
                 transform = transformResource.getTransformWithSize(size);
                 if (transform != null) break;
@@ -87,23 +87,24 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
         @DrawableRes int placeHolderResId = R.drawable.ic_placeholder;
 
         if (transform != null) {
-            picasso.load(transform.url).placeholder(placeHolderResId).into(holder.image);
+            picasso.load(transform.url()).placeholder(placeHolderResId).into(holder.image);
         } else {
             picasso.load(placeHolderResId).into(holder.image);
         }
     }
 
     private void bindSession(EventViewHolder holder, Event event) {
-        List<Session> sessions = event.sessionResource.sessions;
+        List<Session> sessions = event.sessionResource().sessions();
 
         Session nextSession = null;
         int upcomingSessions = 0;
 
         for (Session session : sessions) {
-            if (session.dateEnd.getTime() >= interval.getStartMillis()) {
+            if (session.dateEnd().getTime() >= interval.getStartMillis()) {
                 upcomingSessions++;
 
-                if (nextSession == null && session.dateStart.getTime() <= interval.getEndMillis()) {
+                if (nextSession == null
+                    && session.dateStart().getTime() <= interval.getEndMillis()) {
                     nextSession = session;
                 }
 
@@ -114,13 +115,13 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
         boolean hasMultipleSessions = upcomingSessions > 1;
         holder.moreSessions.setVisibility(hasMultipleSessions ? View.VISIBLE : View.GONE);
 
-        String date = nextSession != null ? nextSession.dateTimeSummary : event.dateTimeSummary;
+        String date = nextSession != null ? nextSession.dateTimeSummary() : event.dateTimeSummary();
         holder.date.setText(date);
     }
 
     @Override public long getItemId(int position) {
         return getItemViewType(position) == VIEW_TYPE_FOOTER ? super.getItemId(position)
-            : events.get(position).id;
+            : events.get(position).id();
     }
 
     @Override public int getItemCount() {

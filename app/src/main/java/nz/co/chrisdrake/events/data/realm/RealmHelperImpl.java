@@ -31,13 +31,13 @@ import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
 
     private RealmLocation createRealmLocation(Location location) {
         RealmLocation realmLocation = realm.createObject(RealmLocation.class);
-        realmLocation.setId(location.id);
-        realmLocation.setName(location.name);
-        realmLocation.setSummary(location.summary);
+        realmLocation.setId(location.id());
+        realmLocation.setName(location.name());
+        realmLocation.setSummary(location.summary());
 
-        LocationChildResource childrenResource = location.children;
+        LocationChildResource childrenResource = location.children();
         if (childrenResource != null) {
-            List<Location> children = childrenResource.children;
+            List<Location> children = childrenResource.children();
             for (Location childLocation : children) {
                 realmLocation.getChildren().add(createRealmLocation(childLocation));
             }

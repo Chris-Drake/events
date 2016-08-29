@@ -7,11 +7,11 @@ import static nz.co.chrisdrake.events.data.api.model.MockEvents.KEYNOTE;
 import static nz.co.chrisdrake.events.data.api.model.MockEvents.NEW_IN_ANDROID;
 
 public final class MockEventResponse {
-    public static final EventResource GOOGLE_IO = new EventResource(Arrays.asList( //
+    public static final EventResource GOOGLE_IO = EventResource.create(Arrays.asList( //
         KEYNOTE, //
         NEW_IN_ANDROID));
 
-    public static final EventResource EMPTY = new EventResource(Collections.<Event>emptyList());
+    public static final EventResource EMPTY = EventResource.create(Collections.<Event>emptyList());
 
     private MockEventResponse() {
         throw new AssertionError("Non-instantiable.");

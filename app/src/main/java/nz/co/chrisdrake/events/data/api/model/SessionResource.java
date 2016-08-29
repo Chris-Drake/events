@@ -1,36 +1,20 @@
 package nz.co.chrisdrake.events.data.api.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 
 /** @see Session */
-public class SessionResource implements Parcelable {
-    public final List<Session> sessions;
+@AutoValue public abstract class SessionResource implements Parcelable {
+    public abstract List<Session> sessions();
 
-    public SessionResource(List<Session> sessions) {
-        this.sessions = sessions;
+    static SessionResource create(List<Session> sessions) {
+        return new AutoValue_SessionResource(sessions);
     }
 
-    protected SessionResource(Parcel in) {
-        sessions = in.createTypedArrayList(Session.CREATOR);
+    public static JsonAdapter<SessionResource> jsonAdapter(Moshi moshi) {
+        return new AutoValue_SessionResource.MoshiJsonAdapter(moshi);
     }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(sessions);
-    }
-
-    @Override public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<SessionResource> CREATOR = new Creator<SessionResource>() {
-        @Override public SessionResource createFromParcel(Parcel in) {
-            return new SessionResource(in);
-        }
-
-        @Override public SessionResource[] newArray(int size) {
-            return new SessionResource[size];
-        }
-    };
 }

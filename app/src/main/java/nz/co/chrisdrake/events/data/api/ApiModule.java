@@ -31,7 +31,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
     }
 
     static Moshi createMoshi() {
-        return new Moshi.Builder().add(new DateAdapter()).build();
+        return new Moshi.Builder() //
+            .add(new DateAdapter()) //
+            .add(AdapterFactory.create()) //
+            .build();
     }
 
     static OkHttpClient createApiClient(OkHttpClient client, ApiAuthenticator authenticator) {

@@ -102,7 +102,8 @@ public class ExploreFilterView extends FrameLayout {
 
     public int getSelectedLocationId() {
         int selectedLocationPosition = locationSpinner.getSelectedItemPosition();
-        return selectedLocationPosition == AdapterView.INVALID_POSITION ? Config.DEFAULT_LOCATION.id
+        return selectedLocationPosition == AdapterView.INVALID_POSITION
+            ? Config.DEFAULT_LOCATION.id()
             : (int) locationAdapter.getItemId(selectedLocationPosition);
     }
 

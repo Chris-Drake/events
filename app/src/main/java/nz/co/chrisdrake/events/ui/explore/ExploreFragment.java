@@ -282,7 +282,7 @@ public class ExploreFragment extends BaseFragment
 
     @Override public void displayLocations(List<RealmLocation> locations) {
         filterView.displayLocations(locations,
-            sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id));
+            sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id()));
     }
 
     @Override public ExploreFilter getFilter() {
@@ -290,7 +290,7 @@ public class ExploreFragment extends BaseFragment
     }
 
     @Override public void onLocationSelected(int id) {
-        if (sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id) != id) {
+        if (sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id()) != id) {
             sharedPrefs.edit().putInt(PREF_KEY_LOCATION, id).apply();
             presenter.attemptRefresh();
         }

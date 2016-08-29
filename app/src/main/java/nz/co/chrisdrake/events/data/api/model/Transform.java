@@ -1,11 +1,13 @@
 package nz.co.chrisdrake.events.data.api.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.auto.value.AutoValue;
 import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 /** @see TransformResource */
-public class Transform implements Parcelable {
+@AutoValue public abstract class Transform implements Parcelable {
     /**
      * Represents different image sizes
      *
@@ -20,45 +22,24 @@ public class Transform implements Parcelable {
         OTHER
     }
 
-    public final String url;
-    public final int width;
-    public final int height;
+    public abstract String url();
+    public abstract int width();
+    public abstract int height();
+    @Json(name = "transformation_id") public abstract TransformSize transformSize();
 
-    @Json(name = "transformation_id") public final TransformSize transformSize;
-
-    public Transform(String url, int width, int height, TransformSize transformSize) {
-        this.url = url;
-        this.width = width;
-        this.height = height;
-        this.transformSize = transformSize;
+    public static JsonAdapter<Transform> jsonAdapter(Moshi moshi) {
+        return new AutoValue_Transform.MoshiJsonAdapter(moshi);
     }
 
-    protected Transform(Parcel in) {
-        url = in.readString();
-        width = in.readInt();
-        height = in.readInt();
-        transformSize = TransformSize.values()[in.readInt()];
+    static Builder builder() {
+        return new AutoValue_Transform.Builder();
     }
 
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(url);
-        dest.writeInt(width);
-        dest.writeInt(height);
-        dest.writeInt(
-            transformSize == null ? TransformSize.OTHER.ordinal() : transformSize.ordinal());
+    @AutoValue.Builder abstract static class Builder {
+        abstract Builder url(String url);
+        abstract Builder width(int width);
+        abstract Builder height(int height);
+        abstract Builder transformSize(TransformSize transformSize);
+        abstract Transform build();
     }
-
-    @Override public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Transform> CREATOR = new Creator<Transform>() {
-        @Override public Transform createFromParcel(Parcel in) {
-            return new Transform(in);
-        }
-
-        @Override public Transform[] newArray(int size) {
-            return new Transform[size];
-        }
-    };
 }

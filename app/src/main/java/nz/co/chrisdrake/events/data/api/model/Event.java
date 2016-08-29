@@ -1,100 +1,55 @@
 package nz.co.chrisdrake.events.data.api.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
+import com.google.auto.value.AutoValue;
 import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.Date;
 
 /** @see EventResource */
-public class Event implements Parcelable {
-    public final long id;
-    public final String name;
-    public final String url;
-    public final String description;
-    public final String address;
-    public final Point point;
-    public final String restrictions;
+@AutoValue public abstract class Event implements Parcelable {
+    public abstract long id();
+    public abstract String name();
+    public abstract String url();
+    public abstract String description();
+    public abstract String address();
+    public abstract Point point();
+    @Nullable public abstract String restrictions();
+    @Json(name = "datetime_start") public abstract Date dateStart();
+    @Json(name = "datetime_end") public abstract Date dateEnd();
+    @Json(name = "datetime_summary") public abstract String dateTimeSummary();
+    @Json(name = "location_summary") public abstract String locationSummary();
+    @Json(name = "is_free") public abstract boolean isFree();
+    @Json(name = "is_featured") public abstract boolean isFeatured();
+    @Json(name = "images") public abstract ImageResource imageResource();
+    @Json(name = "sessions") public abstract SessionResource sessionResource();
 
-    @Json(name = "datetime_start") public final Date dateStart;
-    @Json(name = "datetime_end") public final Date dateEnd;
-    @Json(name = "datetime_summary") public final String dateTimeSummary;
-
-    @Json(name = "location_summary") public final String locationSummary;
-
-    @Json(name = "is_free") public final boolean isFree;
-    @Json(name = "is_featured") public final boolean isFeatured;
-
-    @Json(name = "images") public final ImageResource imageResource;
-    @Json(name = "sessions") public final SessionResource sessionResource;
-
-    public Event(long id, String name, String url, String description, Date dateStart, Date dateEnd,
-        Point point, String locationSummary, String address, boolean isFree, boolean isFeatured,
-        String restrictions, String dateTimeSummary, ImageResource imageResource,
-        SessionResource sessionResource) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-        this.description = description;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.point = point;
-        this.locationSummary = locationSummary;
-        this.address = address;
-        this.isFree = isFree;
-        this.isFeatured = isFeatured;
-        this.restrictions = restrictions;
-        this.dateTimeSummary = dateTimeSummary;
-        this.imageResource = imageResource;
-        this.sessionResource = sessionResource;
+    public static JsonAdapter<Event> jsonAdapter(Moshi moshi) {
+        return new AutoValue_Event.MoshiJsonAdapter(moshi);
     }
 
-    protected Event(Parcel in) {
-        id = in.readLong();
-        name = in.readString();
-        url = in.readString();
-        description = in.readString();
-        dateStart = new Date(in.readLong());
-        dateEnd = new Date(in.readLong());
-        point = in.readParcelable(Point.class.getClassLoader());
-        locationSummary = in.readString();
-        address = in.readString();
-        isFree = in.readByte() == 1;
-        isFeatured = in.readByte() == 1;
-        restrictions = in.readString();
-        dateTimeSummary = in.readString();
-        imageResource = in.readParcelable(ImageResource.class.getClassLoader());
-        sessionResource = in.readParcelable(SessionResource.class.getClassLoader());
+    static Builder builder() {
+        return new AutoValue_Event.Builder();
     }
 
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(name);
-        dest.writeString(url);
-        dest.writeString(description);
-        dest.writeLong(dateStart.getTime());
-        dest.writeLong(dateEnd.getTime());
-        dest.writeParcelable(point, flags);
-        dest.writeString(locationSummary);
-        dest.writeString(address);
-        dest.writeByte((byte) (isFree ? 1 : 0));
-        dest.writeByte((byte) (isFeatured ? 1 : 0));
-        dest.writeString(restrictions);
-        dest.writeString(dateTimeSummary);
-        dest.writeParcelable(imageResource, flags);
-        dest.writeParcelable(sessionResource, flags);
+    @AutoValue.Builder abstract static class Builder {
+        abstract Builder id(long id);
+        abstract Builder name(String name);
+        abstract Builder url(String url);
+        abstract Builder description(String description);
+        abstract Builder address(String address);
+        abstract Builder point(Point point);
+        abstract Builder restrictions(String restrictions);
+        abstract Builder dateStart(Date dateStart);
+        abstract Builder dateEnd(Date dateEnd);
+        abstract Builder dateTimeSummary(String dateTimeSummary);
+        abstract Builder locationSummary(String locationSummary);
+        abstract Builder isFree(boolean isFree);
+        abstract Builder isFeatured(boolean isFeatured);
+        abstract Builder imageResource(ImageResource imageResource);
+        abstract Builder sessionResource(SessionResource sessionResource);
+        abstract Event build();
     }
-
-    @Override public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
-
-        @Override public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
 }

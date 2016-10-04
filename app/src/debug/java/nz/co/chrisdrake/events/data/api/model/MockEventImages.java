@@ -1,6 +1,7 @@
 package nz.co.chrisdrake.events.data.api.model;
 
 import java.util.Collections;
+import nz.co.chrisdrake.events.data.api.model.ImageResource.Image;
 
 public final class MockEventImages {
     static final Image IO = Image.create(true, TransformResource.create(Collections.singletonList(

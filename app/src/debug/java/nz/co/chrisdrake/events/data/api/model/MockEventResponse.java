@@ -2,6 +2,7 @@ package nz.co.chrisdrake.events.data.api.model;
 
 import java.util.Arrays;
 import java.util.Collections;
+import nz.co.chrisdrake.events.data.api.model.EventResource.Event;
 
 import static nz.co.chrisdrake.events.data.api.model.MockEvents.KEYNOTE;
 import static nz.co.chrisdrake.events.data.api.model.MockEvents.NEW_IN_ANDROID;

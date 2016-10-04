@@ -204,7 +204,11 @@ public class ExploreFragment extends BaseFragment
     }
 
     private void initialize(@Nullable Bundle savedInstanceState) {
-        getApplicationComponent().inject(this);
+        DaggerExploreComponent.builder()
+            .eventAppComponent(getApplicationComponent())
+            .exploreModule(new ExploreModule(filter))
+            .build()
+            .inject(this);
 
         eventAdapter = new ExploreEventAdapter(getContext(), picasso, this);
         recyclerView.setAdapter(eventAdapter);
@@ -253,7 +257,7 @@ public class ExploreFragment extends BaseFragment
     }
 
     @Override public void showErrorMessage(String message) {
-        if (filter.getOffset() == 0) {
+        if (getOffset() == 0) {
             errorView.setText(message);
             setViewState(ViewState.ERROR);
         } else {
@@ -271,7 +275,6 @@ public class ExploreFragment extends BaseFragment
     }
 
     @Override public void addEvents(List<Event> events) {
-        eventAdapter.setInterval(filter.getInterval());
         eventAdapter.addAll(events);
     }
 
@@ -280,13 +283,13 @@ public class ExploreFragment extends BaseFragment
         eventAdapter.clear();
     }
 
+    @Override public int getOffset() {
+        return eventAdapter.getAll().size();
+    }
+
     @Override public void displayLocations(List<RealmLocation> locations) {
         filterView.displayLocations(locations,
             sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id()));
-    }
-
-    @Override public ExploreFilter getFilter() {
-        return filter;
     }
 
     @Override public void onLocationSelected(int id) {
@@ -332,10 +335,6 @@ public class ExploreFragment extends BaseFragment
 
         @Override public boolean isFreeOnly() {
             return filterView.isFreeOnly();
-        }
-
-        @Override public int getOffset() {
-            return eventAdapter.getAll().size();
         }
 
         @Override public Interval getInterval() {

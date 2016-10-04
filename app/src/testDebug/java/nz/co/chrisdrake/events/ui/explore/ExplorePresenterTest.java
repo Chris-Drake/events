@@ -1,10 +1,11 @@
 package nz.co.chrisdrake.events.ui.explore;
 
-import android.test.suitebuilder.annotation.SmallTest;
 import io.realm.RealmResults;
 import java.util.Collections;
+import java.util.List;
 import nz.co.chrisdrake.events.data.api.DateQuery;
 import nz.co.chrisdrake.events.data.api.EventFinderService;
+import nz.co.chrisdrake.events.data.api.FindEvents;
 import nz.co.chrisdrake.events.data.api.LocationQuery;
 import nz.co.chrisdrake.events.data.api.Order;
 import nz.co.chrisdrake.events.data.api.model.Event;
@@ -28,13 +29,14 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) @SmallTest public class ExplorePresenterTest {
+@RunWith(MockitoJUnitRunner.class) public class ExplorePresenterTest {
     @Mock EventFinderService mockService;
     @Mock ExploreView mockView;
     @Mock RealmHelper mockRealmHelper;
@@ -45,7 +47,8 @@ import static org.mockito.Mockito.when;
     @Before public void setUp() {
         initMocks();
 
-        presenter = spy(new ExplorePresenter(mockService, mockRealmHelper));
+        FindEvents findEvents = new FindEvents(mockService, mockFilter);
+        presenter = spy(new ExplorePresenter(mockService, findEvents, mockRealmHelper));
         presenter.setView(mockView);
 
         when(presenter.applySchedulers()).thenReturn(new Observable.Transformer<Object, Object>() {
@@ -56,13 +59,13 @@ import static org.mockito.Mockito.when;
     }
 
     @Test public void requestEvents_FilterWithNoOffset_RefreshViewStateSet() {
-        initMockFilterWithNoOffset(mockFilter);
+        initMockFilterWithNoOffset();
         presenter.requestEvents();
         verify(mockView).setViewState(ViewState.REFRESHING);
     }
 
     @Test public void requestEvents_FilterWithOffset_RefreshViewStateNotSet() {
-        initMockFilterWithOffset(mockFilter);
+        initMockFilterWithOffset();
         presenter.requestEvents();
         verify(mockView, never()).setViewState(ViewState.REFRESHING);
     }
@@ -80,12 +83,15 @@ import static org.mockito.Mockito.when;
     }
 
     @Test public void addEvents_EmptyList_LoadMoreDisabled() {
-        presenter.addEvents(Collections.<Event>emptyList());
+        presenter.addEvents(Collections.emptyList());
         verify(mockView).disableLoadMore();
     }
 
     @Test public void addEvents_MoreThanZeroEvents_LoadMoreEnabled() {
-        presenter.addEvents(MockEventResponse.GOOGLE_IO.events());
+        List<Event> events = Collections.singletonList(mock(Event.class));
+
+        presenter.addEvents(events);
+
         verify(mockView).enableLoadMore();
     }
 
@@ -110,16 +116,16 @@ import static org.mockito.Mockito.when;
 
     private void initMocks() {
         initMockServiceWithEventSuccessResponse(mockService);
+
         when(mockFilter.getInterval()).thenReturn(new Interval(0, 0));
-        when(mockView.getFilter()).thenReturn(mockFilter);
     }
 
-    private void initMockFilterWithNoOffset(ExploreFilter filter) {
-        when(filter.getOffset()).thenReturn(0);
+    private void initMockFilterWithNoOffset() {
+        doReturn(0).when(mockView).getOffset();
     }
 
-    private void initMockFilterWithOffset(ExploreFilter filter) {
-        when(filter.getOffset()).thenReturn(1);
+    private void initMockFilterWithOffset() {
+        doReturn(1).when(mockView).getOffset();
     }
 
     private void initMockServiceWithEventSuccessResponse(EventFinderService service) {

@@ -6,19 +6,16 @@ import java.util.List;
 import javax.inject.Inject;
 import nz.co.chrisdrake.events.Config;
 import nz.co.chrisdrake.events.data.DefaultSubscriber;
-import nz.co.chrisdrake.events.data.api.DateQuery;
 import nz.co.chrisdrake.events.data.api.EventFinderService;
+import nz.co.chrisdrake.events.data.api.FindEvents;
 import nz.co.chrisdrake.events.data.api.LocationQuery;
-import nz.co.chrisdrake.events.data.api.Order;
 import nz.co.chrisdrake.events.data.api.model.Event;
-import nz.co.chrisdrake.events.data.api.model.EventResource;
 import nz.co.chrisdrake.events.data.api.model.Location;
 import nz.co.chrisdrake.events.data.api.model.LocationResource;
 import nz.co.chrisdrake.events.data.realm.RealmHelper;
 import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
 import nz.co.chrisdrake.events.ui.BasePresenter;
 import nz.co.chrisdrake.events.ui.ViewState;
-import org.joda.time.Interval;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,6 +29,7 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
 
     private final RealmHelper realmHelper;
     private final EventFinderService eventFinderService;
+    private final FindEvents findEvents;
 
     private boolean loadMoreInProgress = false;
     private boolean shouldReset = false;
@@ -41,9 +39,10 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
 
     private ExploreView view;
 
-    @Inject
-    public ExplorePresenter(EventFinderService eventFinderService, RealmHelper realmHelper) {
+    @Inject ExplorePresenter(EventFinderService eventFinderService, FindEvents findEvents,
+        RealmHelper realmHelper) {
         this.eventFinderService = eventFinderService;
+        this.findEvents = findEvents;
         this.realmHelper = realmHelper;
     }
 
@@ -81,36 +80,22 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
 
         loadMoreInProgress = true;
 
-        ExploreFilter filter = view.getFilter();
-
-        if (filter.getOffset() == 0 || shouldReset) {
+        final int offset = shouldReset ? 0 : view.getOffset();
+        if (offset == 0) {
             view.setViewState(ViewState.REFRESHING);
         }
 
-        LocationQuery locationQuery =
-            new LocationQuery.Builder().location(filter.getLocationId()).build();
-
-        Interval interval = filter.getInterval();
-
-        Observable<EventResource> request = eventFinderService.events( //
-            Order.POPULARITY, //
-            locationQuery, //
-            new DateQuery(interval.getStart()), //
-            new DateQuery(interval.getEnd()), //
-            filter.isFeaturedOnly() ? 1 : 0, //
-            filter.isFreeOnly() ? 1 : 0, //
-            shouldReset ? 0 : filter.getOffset());
-
-        this.eventSubscription = request.compose(this.<EventResource>applySchedulers())
-            .subscribe(new DefaultSubscriber<EventResource>() {
-                @Override public void onNextOrError(@Nullable EventResource eventResource,
-                    @Nullable Throwable e) {
-                    onEventResponse(eventResource, e);
+        this.eventSubscription = findEvents.buildObservable(offset)
+            .compose(applySchedulers())
+            .subscribe(new DefaultSubscriber<List<Event>>() {
+                @Override
+                public void onNextOrError(@Nullable List<Event> eventList, @Nullable Throwable e) {
+                    onEventResponse(eventList, e);
                 }
             });
     }
 
-    private void onEventResponse(@Nullable EventResource eventResource, @Nullable Throwable e) {
+    private void onEventResponse(@Nullable List<Event> eventList, @Nullable Throwable e) {
         loadMoreInProgress = false;
 
         if (shouldReset) view.clearEvents();
@@ -119,8 +104,8 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
 
         if (e != null) {
             view.showErrorMessage(e.getLocalizedMessage());
-        } else if (eventResource != null) {
-            addEvents(eventResource.events());
+        } else if (eventList != null) {
+            addEvents(eventList);
         }
     }
 
@@ -132,7 +117,7 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
             view.disableLoadMore();
         }
 
-        view.setViewState(view.getFilter().getOffset() == 0 ? ViewState.EMPTY : ViewState.DEFAULT);
+        view.setViewState(view.getOffset() == 0 ? ViewState.EMPTY : ViewState.DEFAULT);
     }
 
     public void loadExistingLocations() {

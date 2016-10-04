@@ -1,6 +1,7 @@
 package nz.co.chrisdrake.events.data.api.model;
 
 import java.util.Collections;
+import nz.co.chrisdrake.events.data.api.model.EventResource.Event;
 
 import static nz.co.chrisdrake.events.data.api.model.MockEventSessions.KEYNOTE_SESSION;
 import static nz.co.chrisdrake.events.data.api.model.MockEventSessions.NEW_IN_ANDROID_SESSION;

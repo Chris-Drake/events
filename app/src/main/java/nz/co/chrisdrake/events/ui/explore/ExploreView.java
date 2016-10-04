@@ -18,9 +18,9 @@ public interface ExploreView {
 
     void clearEvents();
 
+    int getOffset();
+
     void setLocationViewState(@ViewState int viewState);
 
     void displayLocations(List<RealmLocation> locations);
-
-    ExploreFilter getFilter();
 }

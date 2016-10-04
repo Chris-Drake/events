@@ -4,6 +4,7 @@ import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import nz.co.chrisdrake.events.data.api.model.EventResource.Event;
 
 /** @see Event */
 @AutoValue public abstract class Point implements Parcelable {

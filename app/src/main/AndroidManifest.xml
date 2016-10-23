@@ -12,11 +12,11 @@
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        android:launchMode="singleTop"
         tools:ignore="UnusedAttribute">
 
         <activity android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.SplashScreen">
+            android:theme="@style/AppTheme.SplashScreen"
+            android:launchMode="singleTop">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>

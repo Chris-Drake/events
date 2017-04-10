@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "25.0.2"
 
     lintOptions {
         warning 'InvalidPackage'
@@ -61,13 +60,13 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${appCompatVersion}"
     compile "com.android.support:customtabs:${appCompatVersion}"
 
-    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
     compile "com.google.dagger:dagger:${daggerVersion}"
     provided "org.glassfish:javax.annotation:10.0-b28"
 
     def butterKnifeVersion = '8.2.1'
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
-    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
 
     compile 'com.jakewharton.timber:timber:4.1.0'
 
@@ -80,13 +79,13 @@ dependencies {
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
     def autoValueVersion = '1.2'
-    apt "com.google.auto.value:auto-value:${autoValueVersion}"
+    annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
     provided "com.google.auto.value:auto-value:${autoValueVersion}"
 
     def autoValueMoshiVersion = '0.4.0-rc2'
-    apt "com.ryanharter.auto.value:auto-value-moshi:${autoValueMoshiVersion}"
+    annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:${autoValueMoshiVersion}"
     provided "com.ryanharter.auto.value:auto-value-moshi:${autoValueMoshiVersion}"
-    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
 
     compile "io.reactivex:rxandroid:1.0.1"
     compile 'io.reactivex:rxjava:1.0.15'

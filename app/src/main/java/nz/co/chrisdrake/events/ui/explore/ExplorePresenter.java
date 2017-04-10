@@ -7,13 +7,13 @@ import javax.inject.Inject;
 import nz.co.chrisdrake.events.Config;
 import nz.co.chrisdrake.events.data.DefaultSubscriber;
 import nz.co.chrisdrake.events.data.api.EventFinderService;
-import nz.co.chrisdrake.events.data.api.FindEvents;
+import nz.co.chrisdrake.events.domain.interactor.FindEvents;
 import nz.co.chrisdrake.events.data.api.LocationQuery;
-import nz.co.chrisdrake.events.data.api.model.Event;
 import nz.co.chrisdrake.events.data.api.model.Location;
 import nz.co.chrisdrake.events.data.api.model.LocationResource;
 import nz.co.chrisdrake.events.data.realm.RealmHelper;
 import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.ui.BasePresenter;
 import nz.co.chrisdrake.events.ui.ViewState;
 import rx.Observable;
@@ -25,7 +25,7 @@ import rx.subscriptions.Subscriptions;
 public class ExplorePresenter implements BasePresenter<ExploreView> {
 
     private static final LocationQuery LOCATION_QUERY =
-        new LocationQuery.Builder().location(Location.NEW_ZEALAND.id()).build();
+        new LocationQuery.Builder().location(Location.NEW_ZEALAND.id).build();
 
     private final RealmHelper realmHelper;
     private final EventFinderService eventFinderService;
@@ -154,7 +154,7 @@ public class ExplorePresenter implements BasePresenter<ExploreView> {
         if (e != null) {
             view.setLocationViewState(ViewState.ERROR);
         } else if (locationResource != null) {
-            realmHelper.setPersistedLocations(locationResource.locations());
+            realmHelper.setPersistedLocations(locationResource.getLocations());
             view.setLocationViewState(ViewState.DEFAULT);
             view.displayLocations(realmHelper.getPersistedLocations());
         }

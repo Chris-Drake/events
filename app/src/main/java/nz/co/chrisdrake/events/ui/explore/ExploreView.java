@@ -1,7 +1,7 @@
 package nz.co.chrisdrake.events.ui.explore;
 
 import java.util.List;
-import nz.co.chrisdrake.events.data.api.model.Event;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
 import nz.co.chrisdrake.events.ui.ViewState;
 

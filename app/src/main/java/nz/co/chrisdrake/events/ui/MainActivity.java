@@ -12,7 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import nz.co.chrisdrake.events.R;
-import nz.co.chrisdrake.events.data.api.model.Event;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.ui.explore.ExploreFragment;
 import nz.co.chrisdrake.events.util.CustomTabActivityHelper;
 
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override public void onEventClicked(Event event) {
-        Uri uri = Uri.parse(event.url());
-        openCustomTab(uri, event.name());
+        Uri uri = Uri.parse(event.url);
+        openCustomTab(uri, event.name);
     }
 
     @Override public void onAttributionClicked() {

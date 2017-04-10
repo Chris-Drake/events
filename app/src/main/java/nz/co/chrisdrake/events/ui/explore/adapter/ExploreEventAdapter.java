@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import nz.co.chrisdrake.events.R;
-import nz.co.chrisdrake.events.data.api.model.Event;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.ui.widget.FooterAdapter;
 import nz.co.chrisdrake.events.ui.widget.ItemClickListener;
 
@@ -43,21 +43,21 @@ public class ExploreEventAdapter extends FooterAdapter<ExploreEventAdapter.Event
 
     @Override public void onBindItemViewHolder(EventViewHolder holder, int position) {
         Event event = events.get(position);
-        holder.title.setText(event.name());
-        holder.location.setText(event.locationSummary());
-        holder.date.setText(event.dateTimeSummary());
-        holder.moreSessions.setVisibility(event.hasMultipleSessions() ? View.VISIBLE : View.GONE);
+        holder.title.setText(event.name);
+        holder.location.setText(event.locationSummary);
+        holder.date.setText(event.dateTimeSummary);
+        holder.moreSessions.setVisibility(event.hasMultipleSessions ? View.VISIBLE : View.GONE);
 
         // Remove line-breaks.
-        String description = event.description().replaceAll("(\\r|\\n)", " ");
+        String description = event.description.replaceAll("(\\r|\\n)", " ");
         holder.description.setText(description);
 
-        picasso.load(event.thumbnailUrl()).placeholder(R.drawable.ic_placeholder).into(holder.image);
+        picasso.load(event.thumbnailUrl).placeholder(R.drawable.ic_placeholder).into(holder.image);
     }
 
     @Override public long getItemId(int position) {
         return getItemViewType(position) == VIEW_TYPE_FOOTER ? super.getItemId(position)
-            : events.get(position).id();
+            : events.get(position).id;
     }
 
     @Override public int getItemCount() {

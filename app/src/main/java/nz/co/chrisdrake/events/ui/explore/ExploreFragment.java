@@ -31,8 +31,8 @@ import java.util.List;
 import javax.inject.Inject;
 import nz.co.chrisdrake.events.Config;
 import nz.co.chrisdrake.events.R;
-import nz.co.chrisdrake.events.data.api.model.Event;
 import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.ui.BaseFragment;
 import nz.co.chrisdrake.events.ui.BasePresenter;
 import nz.co.chrisdrake.events.ui.ViewState;
@@ -289,11 +289,11 @@ public class ExploreFragment extends BaseFragment
 
     @Override public void displayLocations(List<RealmLocation> locations) {
         filterView.displayLocations(locations,
-            sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id()));
+            sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id));
     }
 
     @Override public void onLocationSelected(int id) {
-        if (sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id()) != id) {
+        if (sharedPrefs.getInt(PREF_KEY_LOCATION, Config.DEFAULT_LOCATION.id) != id) {
             sharedPrefs.edit().putInt(PREF_KEY_LOCATION, id).apply();
             presenter.attemptRefresh();
         }

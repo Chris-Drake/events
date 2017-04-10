@@ -5,16 +5,16 @@ import java.util.Collections;
 import java.util.List;
 import nz.co.chrisdrake.events.data.api.DateQuery;
 import nz.co.chrisdrake.events.data.api.EventFinderService;
-import nz.co.chrisdrake.events.data.api.FindEvents;
+import nz.co.chrisdrake.events.domain.interactor.FindEvents;
 import nz.co.chrisdrake.events.data.api.LocationQuery;
 import nz.co.chrisdrake.events.data.api.Order;
-import nz.co.chrisdrake.events.data.api.model.Event;
 import nz.co.chrisdrake.events.data.api.model.EventResource;
 import nz.co.chrisdrake.events.data.api.model.Location;
 import nz.co.chrisdrake.events.data.api.model.LocationResource;
 import nz.co.chrisdrake.events.data.api.model.MockEventResponse;
 import nz.co.chrisdrake.events.data.realm.RealmHelper;
 import nz.co.chrisdrake.events.data.realm.model.RealmLocation;
+import nz.co.chrisdrake.events.domain.model.Event;
 import nz.co.chrisdrake.events.ui.ViewState;
 import org.joda.time.Interval;
 import org.junit.Before;
@@ -88,7 +88,9 @@ import static org.mockito.Mockito.when;
     }
 
     @Test public void addEvents_MoreThanZeroEvents_LoadMoreEnabled() {
-        List<Event> events = Collections.singletonList(mock(Event.class));
+        //noinspection unchecked
+        List<Event> events = mock(List.class);
+        doReturn(1).when(events).size();
 
         presenter.addEvents(events);
 
@@ -147,7 +149,7 @@ import static org.mockito.Mockito.when;
 
     private void initMockServiceWithLocationSuccessResponse(EventFinderService service) {
         LocationResource locationResource =
-            LocationResource.create(Collections.singletonList(Location.NEW_ZEALAND));
+            new LocationResource(Collections.singletonList(Location.NEW_ZEALAND));
         when(service.locations(any(LocationQuery.class), anyInt(), anyInt())).thenReturn(
             Observable.just(locationResource));
     }
